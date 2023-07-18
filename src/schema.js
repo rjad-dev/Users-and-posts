@@ -16,6 +16,19 @@ const typeDefs = gql`
         comments: [Comment!]!
     }
 
+    type Like{
+        id: Int!
+        user: User!
+        post: Post!
+        isLiked:Boolean!
+    }
+
+    type likeResponse{
+        success: Boolean!
+        isLiked: Boolean
+        message: String!
+    }
+
     type Comment {
         id: Int!
         comment: String!
@@ -29,20 +42,6 @@ const typeDefs = gql`
         reply: String!
         comment: Comment!
         user: User!
-    }
-
-    type Query{
-        users: [User!]!
-        user(id:Int!): User!
-
-        posts: [Post!]!
-        post(id:Int!): Post!
-
-        comments: [Comment!]!
-        comment(id:Int!):Comment!
-
-        replies:[Reply!]!
-        reply(id:Int!):Reply!
     }
 
     input addUserInput{
@@ -84,6 +83,21 @@ const typeDefs = gql`
         reply: String!
     }
 
+    type Query{
+        users: [User!]!
+        user(id:Int!): User!
+
+        posts: [Post!]!
+        post(id:Int!): Post!
+
+        comments: [Comment!]!
+        comment(id:Int!):Comment!
+
+        replies:[Reply!]!
+        reply(id:Int!):Reply!
+
+        like(postId:Int!): Like!
+    }
 
     type Mutation {
         addUser(input:addUserInput!):User!
@@ -100,6 +114,9 @@ const typeDefs = gql`
         updatePost(id:Int!,input:updatePostInput!):Post!
         updateComment(id:Int!,input:updateCommentInput!):Comment!
         updateReply(id:Int!, input:updateReplyInput!):Reply!
+
+        toggleLike(id:Int!): likeResponse!
+
     }
 `
 
