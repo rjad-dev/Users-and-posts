@@ -1,12 +1,25 @@
 const {ApolloServer} = require('apollo-server')
 
 const {typeDefs} = require('./schema')
-const {resolvers} = require('./resolvers')
+const Query = require('./resolvers/queryResolver')
+const Mutation = require('./resolvers/mutationResolver')
+const User = require('./resolvers/userResolver')
+const Post = require('./resolvers/postResolver')
+const Comment = require('./resolvers/commentResolver')
+const Reply = require('./resolvers/replyResolver')
+
 const models = require('../models')
 
 const server = new ApolloServer({
     typeDefs,
-    resolvers,
+    resolvers:{
+        Query,
+        Mutation,
+        User,
+        Post,
+        Comment,
+        Reply
+    },
     context : {
         models
     }

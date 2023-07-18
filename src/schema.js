@@ -10,7 +10,7 @@ const typeDefs = gql`
 
     type Post {
         id: Int!
-        content: String!
+        post: String!
         userId: Int!
         user: User!
         comments: [Comment!]!
@@ -21,12 +21,13 @@ const typeDefs = gql`
         comment: String!
         post: Post!
         user: User!
+        replies: [Reply!]!
     }
+
     type Reply{
         id: Int!
         reply: String!
         comment: Comment!
-        post: Post!
         user: User!
     }
 
@@ -40,7 +41,7 @@ const typeDefs = gql`
         comments: [Comment!]!
         comment(id:Int!):Comment!
 
-        replies: [Reply!]!
+        replies:[Reply!]!
         reply(id:Int!):Reply!
     }
 
@@ -50,7 +51,7 @@ const typeDefs = gql`
     }
 
     input addPostInput{
-        content: String!
+        post: String!
         userId: Int!
     }
 
@@ -60,20 +61,27 @@ const typeDefs = gql`
         comment: String!
     }
 
+    input addReplyInput{
+        reply: String!
+        commentId: Int!
+        userId: Int!
+    }
+
     input updateUserInput{
         name:String
         email:String
     }
 
     input updatePostInput{
-        content: String
-        userId: Int
+        post: String
     }
 
     input updateCommentInput{
-        postId:  Int!
-        userId: Int!
         comment: String!
+    }
+
+    input updateReplyInput{
+        reply: String!
     }
 
 
@@ -81,14 +89,17 @@ const typeDefs = gql`
         addUser(input:addUserInput!):User!
         addPost(input:addPostInput!):Post!
         addComment(input:addCommentInput!):Comment!
+        addReply(input:addReplyInput!):Reply!
 
         deleteUser(id:Int!):Boolean!
         deletePost(id:Int!):Boolean!
         deleteComment(id:Int!):Boolean!
+        deleteReply(id:Int!):Boolean!
 
         updateUser(id:Int!,input:updateUserInput!):User!
         updatePost(id:Int!,input:updatePostInput!):Post!
         updateComment(id:Int!,input:updateCommentInput!):Comment!
+        updateReply(id:Int!, input:updateReplyInput!):Reply!
     }
 `
 

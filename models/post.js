@@ -5,9 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   class Post extends Model {
     static associate(models) {
       Post.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
-      Post.hasMany(models.Comment, {foreignKey: 'postId', as: 'comments'})
-      Post.hasMany(models.Reply, {foreignKey: 'postId', as: 'replies'})
-    }
+      Post.hasMany(models.Comment, {foreignKey: 'postId', as: 'comments'})    }
   }
   Post.init({
     id: {
@@ -15,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    content: {
+    post: {
       allowNull:false,
       type: DataTypes.STRING
     },

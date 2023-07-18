@@ -9,9 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      postId: {
+      reply: {
         allowNull:false,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       commentId: {
         allowNull:false,
@@ -20,9 +20,6 @@ module.exports = {
       userId: {
         allowNull:false,
         type: Sequelize.INTEGER
-      },
-      reply: {
-        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
