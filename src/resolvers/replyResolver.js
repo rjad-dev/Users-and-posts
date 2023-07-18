@@ -10,7 +10,7 @@ module.exports = {
 
     async comment(parent, args, {models}){
         try{
-            const comment = await models.Comment.findByPk(parent.postId);
+            const comment = await models.Comment.findByPk(parent.commentId);
             return comment;
         }catch(error){
             throw new Error(error)
