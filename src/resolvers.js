@@ -1,5 +1,4 @@
 const {v4:uuid} = require('uuid')
-const {User, Post} = require('../models')
 
 const resolvers = {
     Query :{
@@ -94,9 +93,9 @@ const resolvers = {
         },
     },
     Post: {
-        async user(parent) {
+        async user(parent, args, {models}) {
             try {
-                const user = await User.findByPk(parent.userId);
+                const user = await models.User.findByPk(parent.userId);
                 return user;
         } catch (error) {
               throw new Error(error);
