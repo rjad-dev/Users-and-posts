@@ -1,5 +1,3 @@
-const {v4:uuid} = require('uuid')
-
 const resolvers = {
     Query :{
         users(parent, args, { models }){
@@ -18,9 +16,21 @@ const resolvers = {
             return models.Post.findByPk(id)
         },
 
-        // comments(parent, {id}, {models}){
-        //     return models.comments.findByPk(id)
-        // }
+        comments(parent, args, { models }){
+            return models.Comment.findAll()
+        },
+        
+        comment(parent, { id }, {models}){
+            return models.Comment.findByPk(id)
+        },
+
+        replies(parent, args, { models }){
+            return models.Reply.findAll()
+        },
+
+        reply(parent, {id}, {models}){
+            return models.Reply.findByPk(id)
+        }
     },
 
     Mutation:{
@@ -40,6 +50,15 @@ const resolvers = {
             })
         },
 
+        async addComment(parent, { input }, { models }){
+            const { comment, postId, userId } = input
+            return models.Comment.create({
+                comment,
+                postId,
+                userId
+            })
+        },
+
         async deleteUser(parent, { id }, { models }){
             const userID = id
             await models.User.destroy({ where: { id: userID } })
@@ -50,6 +69,13 @@ const resolvers = {
         async deletePost(parent, { id }, { models }){
             const postID = id
             await models.Post.destroy({ where: { id: postID } })
+
+            return true
+        },
+
+        async deleteComment(parents, {id}, {models}){
+            const commentID = id
+            await models.Comment.destroy({where:{id:commentID}})
 
             return true
         },
@@ -79,6 +105,16 @@ const resolvers = {
                 where:{id:postID},
             })
             return models.Post.findByPk(postID)
+        },
+
+        async updateComment(parents, {id, input}, {models}){
+            const commentID = id
+            const comment = input.comment
+            models.Comment.update({
+                comment
+            },{
+                where:{id:commentID}
+            })
         }
     },
 
@@ -92,6 +128,7 @@ const resolvers = {
             }
         },
     },
+
     Post: {
         async user(parent, args, {models}) {
             try {
@@ -101,6 +138,16 @@ const resolvers = {
               throw new Error(error);
             }
         },
-    },
+        async comments(parent, args, {models}){
+            try{
+                const comment = await models.Comment.findAll({where:{postId:parent.id}})
+                if(comment){
+                    return comment
+                }
+            }catch(error){
+                throw new Error(error)
+            }
+        }
+    }
 }
 module.exports = { resolvers }

@@ -13,6 +13,7 @@ const typeDefs = gql`
         content: String!
         userId: Int!
         user: User!
+        comments: [Comment!]!
     }
 
     type Comment {
@@ -21,12 +22,26 @@ const typeDefs = gql`
         post: Post!
         user: User!
     }
+    type Reply{
+        id: Int!
+        reply: String!
+        comment: Comment!
+        post: Post!
+        user: User!
+    }
 
     type Query{
         users: [User!]!
         user(id:Int!): User!
+
         posts: [Post!]!
         post(id:Int!): Post!
+
+        comments: [Comment!]!
+        comment(id:Int!):Comment!
+
+        replies: [Reply!]!
+        reply(id:Int!):Reply!
     }
 
     input addUserInput{
@@ -36,7 +51,13 @@ const typeDefs = gql`
 
     input addPostInput{
         content: String!
-         userId: Int!
+        userId: Int!
+    }
+
+    input addCommentInput{
+        postId:  Int!
+        userId: Int!
+        comment: String!
     }
 
     input updateUserInput{
@@ -49,16 +70,25 @@ const typeDefs = gql`
         userId: Int
     }
 
+    input updateCommentInput{
+        postId:  Int!
+        userId: Int!
+        comment: String!
+    }
+
 
     type Mutation {
         addUser(input:addUserInput!):User!
         addPost(input:addPostInput!):Post!
+        addComment(input:addCommentInput!):Comment!
 
         deleteUser(id:Int!):Boolean!
         deletePost(id:Int!):Boolean!
+        deleteComment(id:Int!):Boolean!
 
         updateUser(id:Int!,input:updateUserInput!):User!
         updatePost(id:Int!,input:updatePostInput!):Post!
+        updateComment(id:Int!,input:updateCommentInput!):Comment!
     }
 `
 
