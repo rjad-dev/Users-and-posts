@@ -2,28 +2,41 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Like extends Model {
-
     static associate(models) {
-      Like.belongsTo(models.Post, {foreignKey:'postId', as:'post'})
-      Like.belongsTo(models.User, {foreignKey:'userId', as:'user'})
+
+      Like.belongsTo(models.User, {
+        foreignKey: 'userId', as: 'user' 
+      });
+
+      Like.belongsTo(models.Post, { 
+        foreignKey: 'postId', as: 'post' 
+      });
     }
   }
   Like.init({
-    isLiked: {
+    id: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      primaryKey: true,
+    },
+
+    userId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue:false,
-      type: DataTypes.BOOLEAN
+      references: {
+        model:'User',
+        key: 'id',
+      },
     },
 
-    postId:{
-      allowNull:false,
-      type:DataTypes.INTEGER
+    postId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model:'Post',
+        key: 'id',
+      },
     },
-
-    userID:{
-      allowNull:false,
-      type:DataTypes.INTEGER
-    }
   }, {
     sequelize,
     modelName: 'Like',

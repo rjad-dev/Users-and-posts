@@ -11,8 +11,9 @@ const typeDefs = gql`
     type Post {
         id: Int!
         post: String!
-        userId: Int!
         user: User!
+        likeCount: Int!
+        likes: [Like!]!
         comments: [Comment!]!
     }
 
@@ -20,13 +21,6 @@ const typeDefs = gql`
         id: Int!
         user: User!
         post: Post!
-        isLiked:Boolean!
-    }
-
-    type likeResponse{
-        success: Boolean!
-        isLiked: Boolean
-        message: String!
     }
 
     type Comment {
@@ -52,6 +46,11 @@ const typeDefs = gql`
     input addPostInput{
         post: String!
         userId: Int!
+    }
+
+    input likeInput{
+        postId:Int!
+        userId:Int!
     }
 
     input addCommentInput{
@@ -96,7 +95,7 @@ const typeDefs = gql`
         replies:[Reply!]!
         reply(id:Int!):Reply!
 
-        like(postId:Int!): Like!
+        likes: [Like!]!
     }
 
     type Mutation {
@@ -104,6 +103,9 @@ const typeDefs = gql`
         addPost(input:addPostInput!):Post!
         addComment(input:addCommentInput!):Comment!
         addReply(input:addReplyInput!):Reply!
+
+        likePost(input: likeInput!):Post!
+        unlikePost(input: likeInput!):Post!
 
         deleteUser(id:Int!):Boolean!
         deletePost(id:Int!):Boolean!
@@ -114,8 +116,6 @@ const typeDefs = gql`
         updatePost(id:Int!,input:updatePostInput!):Post!
         updateComment(id:Int!,input:updateCommentInput!):Comment!
         updateReply(id:Int!, input:updateReplyInput!):Reply!
-
-        toggleLike(id:Int!): likeResponse!
 
     }
 `

@@ -7,16 +7,18 @@ const User = require('./resolvers/userResolver')
 const Post = require('./resolvers/postResolver')
 const Comment = require('./resolvers/commentResolver')
 const Reply = require('./resolvers/replyResolver')
+const Like = require('./resolvers/likeResolver')
 
 const models = require('../models')
 
 const server = new ApolloServer({
     typeDefs,
-    resolvers:{
+    resolvers:{ 
         Query,
         Mutation,
         User,
         Post,
+        Like,
         Comment,
         Reply
     },

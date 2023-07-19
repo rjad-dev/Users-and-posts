@@ -9,19 +9,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      isLiked: {
+
+      userId: {
         allowNull:false,
-        defaultValue:false,
-        type: Sequelize.BOOLEAN
+        type: Sequelize.INTEGER
       },
-      postId:{
+
+      postId: {
         allowNull:false,
-        type:Sequelize.INTEGER
+        type: Sequelize.INTEGER
       },
-      userId:{
-        allowNull:false,
-        type:Sequelize.INTEGER
-      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -31,8 +29,14 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    // await queryInterface.addConstraint('Likes', {
+    //   fields: ['userId', 'postId'],
+    //   type: 'unique',
+    //   name: 'unique_user_like',
+    // });
   },
   async down(queryInterface, Sequelize) {
+    // await queryInterface.removeConstraint('Likes', 'unique_user_like');
     await queryInterface.dropTable('Likes');
   }
 };

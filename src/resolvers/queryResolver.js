@@ -15,6 +15,10 @@ module.exports = {
         return models.Post.findByPk(id)
     },
 
+    likes(parent, args, { models }){
+        return models.Like.findAll()
+    },
+
     comments(parent, args, { models }){
         return models.Comment.findAll()
     },
@@ -28,7 +32,6 @@ module.exports = {
     },
 
     reply(parent, {id}, {models}){
-        console.log(id)
         return models.Reply.findByPk(id)
     }
 }

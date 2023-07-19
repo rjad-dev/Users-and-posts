@@ -13,6 +13,12 @@ module.exports = {
         allowNull:false,
         type: Sequelize.STRING
       },
+
+      likeCount: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
+
       userId: {
         allowNull:false,
         type: Sequelize.INTEGER
