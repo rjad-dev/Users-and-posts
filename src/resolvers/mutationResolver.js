@@ -1,12 +1,66 @@
-const { comment } = require("./queryResolver");
+const crypto = require("crypto");
+
+const transporter = require('../../transporter')   
+const nodemailer = require('nodemailer'); 
+const { user } = require("./queryResolver");
 
 module.exports ={
     async addUser(parent, { input }, { models }){
         const { name, email } = input
-        return models.User.create({
-            name,
-            email
+        const Email = email
+        try{
+            const existingEmail = await models.User.findOne({where:{email:Email}})
+            if(existingEmail){
+                throw new Error(`User with the Email:${email} exists already`)
+            }
+
+            const verificationCode = crypto.randomInt(0, 1000000)
+            console.log(verificationCode) 
+            
+            const details = {
+                from : user,
+                to: email,
+                text:`Hi ${name}, Your verification code is ${verificationCode}`
+            }
+            await transporter.sendMail(details, (err) => {
+                if(err){
+                    console.log(err)
+                }else{
+                    console.log('Email sent')
+                }
+            })
+      
+
+            return models.User.create({
+                name,
+                email,
+                verificationCode
+            })
+        }catch(error){
+            throw new Error(error)
+        }
+    },
+
+    async verifyOTP(parent, {email, otp}, {models}){
+        const Email = email
+        const { verificationCode } = await models.User.findOne({
+            where:{
+                email:Email
+            }
         })
+
+        if(verificationCode === otp){
+            models.User.update({
+                isVerified:true
+            }, 
+            {
+                where:{email:Email},
+            })
+        }
+        else{
+            throw new Error('OTP not verified')
+        }
+        return true
     },
 
     async addPost(parent, { input }, { models }){

@@ -29,14 +29,14 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-    // await queryInterface.addConstraint('Likes', {
-    //   fields: ['userId', 'postId'],
-    //   type: 'unique',
-    //   name: 'unique_user_like',
-    // });
+    await queryInterface.addConstraint('Likes', {
+      fields: ['userId', 'postId'],
+      type: 'unique',
+      name: 'unique_user_like',
+    });
   },
   async down(queryInterface, Sequelize) {
-    // await queryInterface.removeConstraint('Likes', 'unique_user_like');
+    await queryInterface.removeConstraint('Likes', 'unique_user_like');
     await queryInterface.dropTable('Likes');
   }
 };

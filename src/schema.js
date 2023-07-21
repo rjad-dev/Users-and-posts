@@ -100,6 +100,8 @@ const typeDefs = gql`
 
     type Mutation {
         addUser(input:addUserInput!):User!
+        verifyOTP(email: String!, otp: String!): Boolean
+
         addPost(input:addPostInput!):Post!
         addComment(input:addCommentInput!):Comment!
         addReply(input:addReplyInput!):Reply!
