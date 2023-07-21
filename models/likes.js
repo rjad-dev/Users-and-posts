@@ -11,12 +11,14 @@ module.exports = (sequelize, DataTypes) => {
       Like.belongsTo(models.Post, { 
         foreignKey: 'postId', as: 'post' 
       });
+
+      Like.belongsToMany(models.User, {through:'Junction'})
     }
   }
   Like.init({
     id: {
       type: DataTypes.INTEGER,
-      defaultValue: 0,
+      autoIncrement: true,
       primaryKey: true,
     },
 

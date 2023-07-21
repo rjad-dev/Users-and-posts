@@ -20,6 +20,8 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey:'userId',
         as:'user'
       })
+
+      User.belongsToMany(models.Like,{through:'Junction'})
     }
   }
   User.init({

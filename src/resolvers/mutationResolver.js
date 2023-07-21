@@ -43,24 +43,28 @@ module.exports ={
 
     async verifyOTP(parent, {email, otp}, {models}){
         const Email = email
-        const { verificationCode } = await models.User.findOne({
-            where:{
-                email:Email
-            }
-        })
-
-        if(verificationCode === otp){
-            models.User.update({
-                isVerified:true
-            }, 
-            {
-                where:{email:Email},
+        try{
+            const { verificationCode } = await models.User.findOne({
+                where:{
+                    email:Email
+                }
             })
+
+            if(verificationCode === otp){
+                models.User.update({
+                    isVerified:true
+                }, 
+                {
+                    where:{email:Email},
+                })
+            }
+            else{
+                throw new Error('OTP not verified')
+            }
+            return true
+        }catch(error){
+            console.log(error)
         }
-        else{
-            throw new Error('OTP not verified')
-        }
-        return true
     },
 
     async addPost(parent, { input }, { models }){
@@ -293,6 +297,7 @@ module.exports ={
 
             return post;
         } catch(error){
+            console.log(error)
             throw new Error(error)
         }
     },

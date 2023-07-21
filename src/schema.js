@@ -5,6 +5,7 @@ const typeDefs = gql`
         id: Int!
         name:String!
         email:String!
+        isVerified:Boolean!
         posts: [Post!]!
     }
 
